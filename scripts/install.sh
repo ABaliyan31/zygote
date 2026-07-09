@@ -10,13 +10,15 @@ if [ -z "$REPO_URL" ]; then
   exit 1
 fi
 
+TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+git clone --depth 1 "$REPO_URL" "$TMP_DIR"
+
 mkdir -p "$HOME/.claude/skills"
+rm -rf "$TARGET_DIR"
+mkdir -p "$TARGET_DIR"
+cp "$TMP_DIR/SKILL.md" "$TARGET_DIR/"
+cp -r "$TMP_DIR/templates" "$TARGET_DIR/"
 
-if [ -d "$TARGET_DIR" ]; then
-  echo "Existing install found at $TARGET_DIR — updating."
-  git -C "$TARGET_DIR" pull --ff-only
-else
-  git clone "$REPO_URL" "$TARGET_DIR"
-fi
-
-echo "my-boilerplate skill installed to $TARGET_DIR"
+echo "zygote skill installed to $TARGET_DIR"
