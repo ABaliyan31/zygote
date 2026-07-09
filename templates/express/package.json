@@ -1,0 +1,17 @@
+{
+  "name": "zygote-express-app",
+  "version": "1.0.0",
+  "private": true,
+  "main": "app.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "dependencies": {
+    "express": "^4.19.0",
+    "dotenv": "^16.4.0"
+  }
+}

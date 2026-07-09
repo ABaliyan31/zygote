@@ -8,6 +8,8 @@ app.py          # entrypoint
 config.py       # env-based config
 routes/
   health.py     # /health blueprint
+models/
+  __init__.py   # no ORM/DB wired by default, drop model files here
 requirements.txt
 .env.example    # copy to .env
 ```

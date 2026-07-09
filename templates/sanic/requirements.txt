@@ -1,2 +1,2 @@
-sanic>=23.12
+sanic>=23.12,<24
 python-dotenv>=1.0
