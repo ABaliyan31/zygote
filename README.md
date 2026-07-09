@@ -6,12 +6,12 @@ Claude Code skill: scaffold backend/frontend boilerplate repos on command. Detec
 
 **macOS / Linux:**
 ```
-curl -fsSL https://raw.githubusercontent.com/ABaliyan31/zygote/main/scripts/install.sh | bash -s -- https://github.com/ABaliyan31/zygote.git
+curl -fsSL https://raw.githubusercontent.com/ABaliyan31/zygote/master/scripts/install.sh | bash -s -- https://github.com/ABaliyan31/zygote.git
 ```
 
 **Windows (PowerShell):**
 ```
-iwr https://raw.githubusercontent.com/ABaliyan31/zygote/main/scripts/install.ps1 -UseBasicParsing | iex
+iwr https://raw.githubusercontent.com/ABaliyan31/zygote/master/scripts/install.ps1 -UseBasicParsing | iex
 ```
 (or download `install.ps1` and run `.\install.ps1 -RepoUrl https://github.com/ABaliyan31/zygote.git`)
 
