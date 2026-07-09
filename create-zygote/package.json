@@ -1,0 +1,14 @@
+{
+  "name": "create-zygote",
+  "version": "1.0.0",
+  "description": "Installs the zygote Claude Code skill (boilerplate scaffolder) into ~/.claude/skills/zygote",
+  "bin": {
+    "create-zygote": "./bin/cli.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin"
+  ]
+}

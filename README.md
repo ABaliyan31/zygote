@@ -4,18 +4,12 @@ Claude Code skill: scaffold backend/frontend boilerplate repos on command. Detec
 
 ## Install
 
-**macOS / Linux:**
+Works on macOS, Linux, and Windows — same command:
 ```
-curl -fsSL https://raw.githubusercontent.com/ABaliyan31/zygote/master/scripts/install.sh | bash -s -- https://github.com/ABaliyan31/zygote.git
+npx create-zygote
 ```
 
-**Windows (PowerShell):**
-```
-iwr https://raw.githubusercontent.com/ABaliyan31/zygote/master/scripts/install.ps1 -UseBasicParsing | iex
-```
-(or download `install.ps1` and run `.\install.ps1 -RepoUrl https://github.com/ABaliyan31/zygote.git`)
-
-Both drop this skill into `~/.claude/skills/zygote/`.
+Drops this skill into `~/.claude/skills/zygote/`.
 
 ## Usage
 ```
