@@ -1,5 +1,5 @@
 ---
-name: zygote
+name: create-zygote
 description: "scaffold backend/frontend boilerplate repos (node, python, react, etc.) - dependency check - confirm - install - scaffold"
 trigger: /create-zygote
 ---
