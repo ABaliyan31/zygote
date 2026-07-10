@@ -13,9 +13,10 @@ Scaffolds a boilerplate project for a given stack in the current working directo
 /create-zygote sanic          # scaffold Sanic (Python async) backend
 /create-zygote express        # scaffold Express (flat, no MVC layering) backend
 /create-zygote express-mvc    # scaffold Express w/ routes -> controllers -> models layering
+/create-zygote react-vite     # scaffold React + Vite (TypeScript) frontend
 ```
 
-Supported stacks (v1): `sanic`, `express`, `express-mvc`. More stacks (fastapi, django, react-vite, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
+Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`. More stacks (fastapi, django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
 
 ## Flow (follow in order, every invocation)
 
@@ -38,6 +39,12 @@ Supported stacks (v1): `sanic`, `express`, `express-mvc`. More stacks (fastapi, 
 | venv module | `python3 -m venv --help` | ships with python3 | ships with python install above |
 
 ### express / express-mvc
+| Requires | Check cmd | macOS install | Windows install (PowerShell) |
+|---|---|---|---|
+| node (>=18) | `node --version` | `brew install node` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install OpenJS.NodeJS.LTS` |
+| npm | `npm --version` | ships with node install above | ships with node install above |
+
+### react-vite
 | Requires | Check cmd | macOS install | Windows install (PowerShell) |
 |---|---|---|---|
 | node (>=18) | `node --version` | `brew install node` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install OpenJS.NodeJS.LTS` |
@@ -86,6 +93,27 @@ Supported stacks (v1): `sanic`, `express`, `express-mvc`. More stacks (fastapi, 
   npm list express --depth=0
   ```
   For `express-mvc` also run `npm list ejs --depth=0`.
+  Print these under a "Versions" heading in the final report.
+
+### Local setup after scaffold (react-vite)
+- macOS/Linux:
+  ```
+  npm install
+  cp .env.example .env
+  ```
+- Windows (PowerShell):
+  ```
+  npm install
+  copy .env.example .env
+  ```
+- Final run command to report to user: `npm run dev`.
+- Version check (run after `npm install`, before final report):
+  ```
+  node --version
+  npm --version
+  npm list react --depth=0
+  npm list vite --depth=0
+  ```
   Print these under a "Versions" heading in the final report.
 
 ## Notes
