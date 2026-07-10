@@ -17,6 +17,7 @@ Drops this skill into `~/.claude/skills/zygote/`.
 /create-zygote express
 /create-zygote express-mvc
 /create-zygote react-vite
+/create-zygote mern
 ```
 Run inside the folder you want the project scaffolded into.
 
@@ -25,6 +26,7 @@ Run inside the folder you want the project scaffolded into.
 - `express` — Node/Express backend, flat structure (no MVC layering)
 - `express-mvc` — Node/Express backend, routes → controllers → models layering
 - `react-vite` — React + Vite frontend (TypeScript)
+- `mern` — MongoDB + Express + React + Node, scaffolds `server/` + `client/` side by side, run independently (no root package.json/orchestration)
 
 More planned: fastapi, django, nextjs, vue, vanilla-html.
 

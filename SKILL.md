@@ -14,9 +14,12 @@ Scaffolds a boilerplate project for a given stack in the current working directo
 /create-zygote express        # scaffold Express (flat, no MVC layering) backend
 /create-zygote express-mvc    # scaffold Express w/ routes -> controllers -> models layering
 /create-zygote react-vite     # scaffold React + Vite (TypeScript) frontend
+/create-zygote mern           # scaffold MERN: server/ (Express+mongoose) + client/ (React+Vite) side by side
 ```
 
-Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`. More stacks (fastapi, django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
+Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`, `mern`. More stacks (fastapi, django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
+
+`mern` is a composite stack, scaffolded differently from every other stack — see "Scaffold steps for `mern`" under step 6 below. It reuses the `express` and `react-vite` templates as a base plus a small overlay (`templates/mern/overlay/`), instead of duplicating their files. It intentionally has no root `package.json`/orchestration — the two apps are run independently, in separate terminals.
 
 ## Flow (follow in order, every invocation)
 
@@ -25,9 +28,20 @@ Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`. More sta
 3. **Detect OS** from current session context (Darwin = macOS, or Linux, or Windows). Don't re-derive with extra commands if already known.
 4. **Dependency check** for the requested stack (see table below). Run each check command via Bash.
 5. **If anything missing**: show the user the exact list of missing tools + the exact install command(s) you intend to run for their OS, then **ask for explicit confirmation before running any install command**. Never install silently. This applies to system-wide/global tool installs (python, node, brew, homebrew itself, etc.) — not to project-local steps like `pip install -r requirements.txt` inside a venv, which are scoped to the new project dir and don't need a separate confirm beyond the overall scaffold going ahead.
-6. **Scaffold**: copy the stack's template from `templates/<stack>/` (relative to this skill's own directory) into the current working directory.
+6. **Scaffold**: copy the stack's template from `templates/<stack>/` (relative to this skill's own directory) into the current working directory. **Exception: `mern`** — do not just copy `templates/mern/`; follow "Scaffold steps for `mern`" (below the Flow list, before the Dependency table) instead.
 7. **Local env setup** (venv/npm install/etc, per stack — see table). These are project-scoped and reversible, run without extra confirmation.
 8. **Report**: print what was created, the exact next command the user runs to start the app, and a **Versions** block listing the runtime + key package versions actually installed (see per-stack "Version check" command below — run it after local env setup, inside the venv/node_modules just created, and print its output verbatim).
+
+### Scaffold steps for `mern` (this is step 6, specifically for this stack — steps 1-5, 7, 8 above still apply as normal)
+Run in order, every invocation of `/create-zygote mern`:
+1. `mkdir server client`
+2. Copy `templates/express/.` into `server/` (base — flat Express, no MVC).
+3. Copy `templates/mern/overlay/server/.` into `server/`, **overwriting** any same-named file (`app.js`, `config.js`, `package.json`, `.env.example`, `README.md` get replaced; `db.js` and `models/User.js` are added).
+4. Delete `server/models/index.js` — it's the plain-express placeholder ("no ORM wired by default") and is now stale/wrong since `models/User.js` wires a real one.
+5. Copy `templates/react-vite/.` into `client/` (base, unchanged).
+6. Copy `templates/mern/overlay/client/.` into `client/`, overwriting `.env.example` and `README.md` only.
+
+Never overwrite an existing non-empty `server/` or `client/` without asking first (same rule as the general Notes section below).
 
 ## Dependency table
 
@@ -49,6 +63,16 @@ Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`. More sta
 |---|---|---|---|
 | node (>=18) | `node --version` | `brew install node` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install OpenJS.NodeJS.LTS` |
 | npm | `npm --version` | ships with node install above | ships with node install above |
+
+### mern
+| Requires | Check cmd | macOS install | Windows install (PowerShell) |
+|---|---|---|---|
+| node (>=18) | `node --version` | `brew install node` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install OpenJS.NodeJS.LTS` |
+| npm | `npm --version` | ships with node install above | ships with node install above |
+
+MongoDB itself is **not** checked or installed — `server/db.js` connects non-blocking, and the
+final report tells the user to point `MONGO_URI` at a running local Mongo or an Atlas connection
+string. Don't attempt to install/start a local MongoDB service.
 
 ### Local setup after scaffold (sanic)
 - macOS/Linux:
@@ -115,6 +139,34 @@ Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`. More sta
   npm list vite --depth=0
   ```
   Print these under a "Versions" heading in the final report.
+
+### Local setup after scaffold (mern)
+- macOS/Linux:
+  ```
+  cd server && npm install && cp .env.example .env && cd ..
+  cd client && npm install && cp .env.example .env && cd ..
+  ```
+- Windows (PowerShell):
+  ```
+  cd server; npm install; copy .env.example .env; cd ..
+  cd client; npm install; copy .env.example .env; cd ..
+  ```
+- Final run commands to report to user (two separate terminals, do not combine):
+  ```
+  cd server && npm start      # http://localhost:3000
+  cd client && npm run dev    # http://localhost:5173
+  ```
+- Version check (run after both `npm install`s, before final report):
+  ```
+  node --version
+  npm --version
+  npm --prefix server list express --depth=0
+  npm --prefix server list mongoose --depth=0
+  npm --prefix client list react --depth=0
+  npm --prefix client list vite --depth=0
+  ```
+  Print these under a "Versions" heading in the final report. Also remind the user Mongo isn't
+  auto-installed — see `server/README.md`.
 
 ## Notes
 - Never overwrite an existing non-empty target directory without asking first.
