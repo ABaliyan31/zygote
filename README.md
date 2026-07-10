@@ -19,6 +19,7 @@ Drops this skill into `~/.claude/skills/zygote/`.
 /create-zygote react-vite
 /create-zygote mern
 /create-zygote fastapi
+/create-zygote rails
 ```
 Run inside the folder you want the project scaffolded into.
 
@@ -29,6 +30,7 @@ Run inside the folder you want the project scaffolded into.
 - `react-vite` — React + Vite frontend (TypeScript)
 - `mern` — MongoDB + Express + React + Node, scaffolds `server/` + `client/` side by side, run independently (no root package.json/orchestration)
 - `fastapi` — Python async backend, w/ auto-generated interactive docs at `/docs`
+- `rails` — Ruby on Rails, full MVC w/ a working `Note` resource (model + migration + controller + views) backed by SQLite
 
 More planned: django, nextjs, vue, vanilla-html.
 

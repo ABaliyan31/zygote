@@ -16,9 +16,10 @@ Scaffolds a boilerplate project for a given stack in the current working directo
 /create-zygote react-vite     # scaffold React + Vite (TypeScript) frontend
 /create-zygote mern           # scaffold MERN: server/ (Express+mongoose) + client/ (React+Vite) side by side
 /create-zygote fastapi        # scaffold FastAPI (Python async) backend
+/create-zygote rails          # scaffold Ruby on Rails, full MVC (Note resource + SQLite)
 ```
 
-Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`, `mern`, `fastapi`. More stacks (django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
+Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`, `mern`, `fastapi`, `rails`. More stacks (django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
 
 `mern` is a composite stack, scaffolded differently from every other stack — see "Scaffold steps for `mern`" under step 6 below. It reuses the `express` and `react-vite` templates as a base plus a small overlay (`templates/mern/overlay/`), instead of duplicating their files. It intentionally has no root `package.json`/orchestration — the two apps are run independently, in separate terminals.
 
@@ -81,6 +82,20 @@ Never overwrite an existing non-empty `server/` or `client/` without asking firs
 MongoDB itself is **not** checked or installed — `server/db.js` connects non-blocking, and the
 final report tells the user to point `MONGO_URI` at a running local Mongo or an Atlas connection
 string. Don't attempt to install/start a local MongoDB service.
+
+### rails
+| Requires | Check cmd | macOS install | Windows install (PowerShell) |
+|---|---|---|---|
+| ruby (>=3.2) | `ruby --version` | `brew install ruby` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install RubyInstallerTeam.RubyWithDevKit.3.4` (untested on Windows — verify `ruby --version` works after, RubyInstaller normally wires PATH itself) |
+| rails gem | `rails --version` | `gem install rails` (after ruby install above) | `gem install rails` |
+
+Homebrew's Ruby is keg-only for gem binaries: after `gem install rails`, the `rails` command may
+not resolve on PATH yet. Before running any further ruby/rails/bundle command this session, run:
+```
+export PATH="$(ruby -e 'puts Gem.bindir'):$PATH"
+```
+Then re-check `rails --version`. Don't skip this — it's why `rails --version` can fail right after
+a successful install.
 
 ### Local setup after scaffold (sanic)
 - macOS/Linux:
@@ -199,6 +214,29 @@ string. Don't attempt to install/start a local MongoDB service.
   ```
   Print these under a "Versions" heading in the final report. Also remind the user Mongo isn't
   auto-installed — see `server/README.md`.
+
+### Local setup after scaffold (rails)
+- macOS/Linux:
+  ```
+  bundle install
+  bin/rails db:create db:migrate
+  ```
+- Windows (PowerShell):
+  ```
+  bundle install
+  bin/rails db:create db:migrate
+  ```
+- Gems install into `./vendor/bundle` (project-local, via the shipped `.bundle/config`) — not
+  system-wide, no extra confirmation needed beyond the scaffold going ahead.
+- Final run command to report to user: `bin/rails server`. Mention: `/` lists notes, `/health`
+  returns JSON, `/up` is Rails' own built-in health check.
+- Version check (run after `bundle install`, before final report):
+  ```
+  ruby --version
+  rails --version
+  bundle exec gem list sqlite3
+  ```
+  Print these under a "Versions" heading in the final report.
 
 ## Notes
 - Never overwrite an existing non-empty target directory without asking first.
