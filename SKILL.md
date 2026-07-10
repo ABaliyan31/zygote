@@ -15,9 +15,10 @@ Scaffolds a boilerplate project for a given stack in the current working directo
 /create-zygote express-mvc    # scaffold Express w/ routes -> controllers -> models layering
 /create-zygote react-vite     # scaffold React + Vite (TypeScript) frontend
 /create-zygote mern           # scaffold MERN: server/ (Express+mongoose) + client/ (React+Vite) side by side
+/create-zygote fastapi        # scaffold FastAPI (Python async) backend
 ```
 
-Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`, `mern`. More stacks (fastapi, django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
+Supported stacks (v1): `sanic`, `express`, `express-mvc`, `react-vite`, `mern`, `fastapi`. More stacks (django, nextjs, vue, vanilla-html) planned — not yet implemented. If the requested stack isn't in this list, tell the user it's unsupported and list what's available. Do not attempt to scaffold an unlisted stack.
 
 `mern` is a composite stack, scaffolded differently from every other stack — see "Scaffold steps for `mern`" under step 6 below. It reuses the `express` and `react-vite` templates as a base plus a small overlay (`templates/mern/overlay/`), instead of duplicating their files. It intentionally has no root `package.json`/orchestration — the two apps are run independently, in separate terminals.
 
@@ -46,6 +47,13 @@ Never overwrite an existing non-empty `server/` or `client/` without asking firs
 ## Dependency table
 
 ### sanic
+| Requires | Check cmd | macOS install | Windows install (PowerShell) |
+|---|---|---|---|
+| python3 (>=3.8) | `python3 --version` | `brew install python3` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install Python.Python.3` |
+| pip | `python3 -m pip --version` | ships with python3 install above | ships with python install above |
+| venv module | `python3 -m venv --help` | ships with python3 | ships with python install above |
+
+### fastapi
 | Requires | Check cmd | macOS install | Windows install (PowerShell) |
 |---|---|---|---|
 | python3 (>=3.8) | `python3 --version` | `brew install python3` (if `brew` missing, ask before installing Homebrew via its official install script first) | `winget install Python.Python.3` |
@@ -95,6 +103,30 @@ string. Don't attempt to install/start a local MongoDB service.
   python3 --version
   pip show sanic | grep -i version
   pip show python-dotenv | grep -i version
+  ```
+  Print these under a "Versions" heading in the final report.
+
+### Local setup after scaffold (fastapi)
+- macOS/Linux:
+  ```
+  python3 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+  cp .env.example .env
+  ```
+- Windows (PowerShell):
+  ```
+  python -m venv venv
+  venv\Scripts\Activate.ps1
+  pip install -r requirements.txt
+  copy .env.example .env
+  ```
+- Final run command to report to user: `python app.py` (after activating venv). Mention `/docs` for interactive API docs.
+- Version check (run after local env setup, venv still active, before final report):
+  ```
+  python3 --version
+  pip show fastapi | grep -i version
+  pip show uvicorn | grep -i version
   ```
   Print these under a "Versions" heading in the final report.
 
